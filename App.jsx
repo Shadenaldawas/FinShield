@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import DisclaimerBanner from './components/DisclaimerBanner.jsx'
+import DisclaimerBanner from './DisclaimerBanner.jsx'
 import AssessmentForm from './components/AssessmentForm.jsx'
 import Dashboard from './components/Dashboard.jsx'
 import { assess } from './api.js'
