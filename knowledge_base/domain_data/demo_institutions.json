@@ -1,0 +1,41 @@
+{
+  "note": "SYNTHETIC DEMO DATA — not real institutions",
+  "institutions": [
+    {
+      "id": "demo-01",
+      "name": "Demo institution — Digital Investment Launch",
+      "institution_type": "fintech",
+      "product": "digital_investment",
+      "target_market": "ksa_domestic",
+      "annual_revenue": 42000000,
+      "operating_costs": 31000000,
+      "capital_adequacy_ratio": 11.2,
+      "liquidity_ratio": 95,
+      "npl_ratio": 3.1
+    },
+    {
+      "id": "demo-02",
+      "name": "Demo institution — GCC Expansion, Lending",
+      "institution_type": "bank",
+      "product": "lending",
+      "target_market": "gcc_expansion",
+      "annual_revenue": 210000000,
+      "operating_costs": 150000000,
+      "capital_adequacy_ratio": 9.4,
+      "liquidity_ratio": 78,
+      "npl_ratio": 6.4
+    },
+    {
+      "id": "demo-03",
+      "name": "Demo institution — Insurance New Product",
+      "institution_type": "insurer",
+      "product": "insurance",
+      "target_market": "ksa_domestic",
+      "annual_revenue": 88000000,
+      "operating_costs": 60000000,
+      "capital_adequacy_ratio": 13.5,
+      "liquidity_ratio": 110,
+      "npl_ratio": 1.2
+    }
+  ]
+}

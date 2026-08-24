@@ -1,0 +1,15 @@
+{
+  "note": "SYNTHETIC DEMO DATA — illustrative only, not sourced from a live economic data feed",
+  "markets": {
+    "ksa_domestic": {
+      "label": "Saudi Arabia (Domestic)",
+      "fintech_adoption_index": 0.71,
+      "regulatory_maturity_index": 0.8
+    },
+    "gcc_expansion": {
+      "label": "GCC Regional Expansion",
+      "fintech_adoption_index": 0.63,
+      "regulatory_maturity_index": 0.66
+    }
+  }
+}
