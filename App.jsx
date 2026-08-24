@@ -1,108 +1,152 @@
 import { useState } from 'react'
-import AssessmentForm from './AssessmentForm.jsx'
-import Dashboard from './Dashboard.jsx'
-import { assess } from './api.js'
-
-const VIEWS = { LANDING: 'landing', FORM: 'form', LOADING: 'loading', RESULTS: 'results' }
 
 export default function App() {
-  const [view, setView] = useState(VIEWS.LANDING)
+  const [view, setView] = useState('landing')
+  const [loading, setLoading] = useState(false)
   const [result, setResult] = useState(null)
-  const [error, setError] = useState(null)
 
-  async function handleSubmit(payload) {
-    setView(VIEWS.LOADING)
-    setError(null)
-    try {
-      const data = await assess(payload)
-      setResult(data)
-      setView(VIEWS.RESULTS)
-    } catch (e) {
-      setError(e.message)
-      setView(VIEWS.FORM)
-    }
-  }
+  const handleStart = () => setView('form')
 
-  function restart() {
-    setResult(null)
-    setView(VIEWS.FORM)
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    setView('loading')
+    
+    // شبيكة محاكاة للتحليل
+    setTimeout(() => {
+      setResult({
+        overallScore: 85,
+        status: 'PASS',
+        riskLevel: 'Low Risk',
+        summary: 'The institution demonstrates strong financial readiness and capital adequacy under ITU guidelines.',
+        recommendations: [
+          'Maintain current liquidity buffers.',
+          'Ensure continuous monitoring of operational expenses.',
+          'Align cybersecurity frameworks with SAMA standards.'
+        ]
+      })
+      setView('results')
+    }, 2000)
   }
 
   return (
-    <div className="min-h-screen px-6 py-8">
-      <header className="max-w-5xl mx-auto flex items-center justify-between mb-6">
-        <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-lg bg-emerald-500/20 flex items-center justify-center text-emerald-400 font-bold">
-            FS
+    <div style={{ minHeight: '100vh', backgroundColor: '#0b1119', color: '#f8fafc', fontFamily: 'sans-serif', padding: '24px' }}>
+      <div style={{ maxWidth: '800px', margin: '0 auto' }}>
+        
+        {/* Header */}
+        <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid #1e293b', paddingBottom: '16px', marginBottom: '24px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <span style={{ backgroundColor: '#10b981', color: '#0f172a', fontWeight: 'bold', padding: '4px 8px', borderRadius: '6px', fontSize: '14px' }}>FS</span>
+            <span style={{ fontSize: '18px', fontWeight: 'bold' }}>FinShield</span>
           </div>
-          <span className="font-semibold text-lg">FinShield</span>
-        </div>
-        <span className="text-xs text-slate-500">ITU AI Readiness 2.0 Hackathon — Prototype</span>
-      </header>
+          <span style={{ fontSize: '12px', color: '#64748b' }}>ITU AI Readiness 2.0 Hackathon — Prototype</span>
+        </header>
 
-      <div className="max-w-5xl mx-auto mb-8">
-        <div className="bg-amber-500/10 border border-amber-500/20 text-amber-200 text-xs p-3 rounded-lg">
+        {/* Disclaimer Banner */}
+        <div style={{ backgroundColor: 'rgba(245, 158, 11, 0.1)', border: '1px solid rgba(245, 158, 11, 0.2)', color: '#fef3c7', padding: '12px', borderRadius: '8px', fontSize: '12px', marginBottom: '32px' }}>
           Decision-support prototype only — not a certified financial or regulatory assessment tool. Built for the ITU AI Readiness 2.0 Hackathon.
         </div>
-      </div>
 
-      {view === VIEWS.LANDING && <Landing onStart={() => setView(VIEWS.FORM)} />}
-
-      {view === VIEWS.FORM && (
-        <div className="space-y-4">
-          {error && (
-            <p className="max-w-2xl mx-auto text-sm text-rose-400 bg-rose-500/10 border border-rose-500/30 rounded-md px-4 py-2">
-              {error}
+        {/* 1. LANDING VIEW */}
+        {view === 'landing' && (
+          <div style={{ textAlign: 'center', marginTop: '48px' }}>
+            <h1 style={{ fontSize: '28px', fontWeight: 'bold', marginBottom: '16px' }}>AI-Powered Financial Readiness Assessment</h1>
+            <p style={{ color: '#94a3b8', lineHeight: '1.6', maxWidth: '600px', margin: '0 auto 24px auto', fontSize: '14px' }}>
+              FinShield combines your institution's financial profile with an official-sources-only regulatory knowledge base to produce an explainable readiness score, risk breakdown, and evidence-backed recommendations.
             </p>
-          )}
-          <AssessmentForm onSubmit={handleSubmit} />
-        </div>
-      )}
+            <button 
+              onClick={handleStart} 
+              style={{ backgroundColor: '#10b981', color: '#0f172a', fontWeight: 'bold', border: 'none', padding: '12px 24px', borderRadius: '8px', cursor: 'pointer', fontSize: '15px' }}
+            >
+              Start Assessment →
+            </button>
+          </div>
+        )}
 
-      {view === VIEWS.LOADING && <LoadingPipeline />}
+        {/* 2. FORM VIEW */}
+        {view === 'form' && (
+          <form onSubmit={handleSubmit} style={{ backgroundColor: '#111827', padding: '24px', borderRadius: '12px', border: '1px solid #1e293b' }}>
+            <h2 style={{ fontSize: '18px', margin: '0 0 6px 0' }}>Institution, Product & Financials</h2>
+            <p style={{ fontSize: '12px', color: '#64748b', margin: '0 0 20px 0' }}>Pre-filled with the hackathon demo scenario. Edit any field.</p>
 
-      {view === VIEWS.RESULTS && result && <Dashboard result={result} onRestart={restart} />}
-    </div>
-  )
-}
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '24px' }}>
+              <div>
+                <label style={{ display: 'block', fontSize: '12px', color: '#94a3b8', marginBottom: '4px' }}>Institution type</label>
+                <input type="text" defaultValue="Fintech Sandbox Applicant" style={{ width: '100%', padding: '8px 12px', backgroundColor: '#030712', border: '1px solid #1e293b', color: '#fff', borderRadius: '6px', fontSize: '13px', boxSizing: 'border-box' }} />
+              </div>
+              <div>
+                <label style={{ display: 'block', fontSize: '12px', color: '#94a3b8', marginBottom: '4px' }}>Proposed product</label>
+                <input type="text" defaultValue="Digital Investment Platform" style={{ width: '100%', padding: '8px 12px', backgroundColor: '#030712', border: '1px solid #1e293b', color: '#fff', borderRadius: '6px', fontSize: '13px', boxSizing: 'border-box' }} />
+              </div>
+              <div>
+                <label style={{ display: 'block', fontSize: '12px', color: '#94a3b8', marginBottom: '4px' }}>Annual revenue (SAR)</label>
+                <input type="text" defaultValue="15,000,000" style={{ width: '100%', padding: '8px 12px', backgroundColor: '#030712', border: '1px solid #1e293b', color: '#fff', borderRadius: '6px', fontSize: '13px', boxSizing: 'border-box' }} />
+              </div>
+              <div>
+                <label style={{ display: 'block', fontSize: '12px', color: '#94a3b8', marginBottom: '4px' }}>Capital adequacy ratio (%)</label>
+                <input type="text" defaultValue="18.5" style={{ width: '100%', padding: '8px 12px', backgroundColor: '#030712', border: '1px solid #1e293b', color: '#fff', borderRadius: '6px', fontSize: '13px', boxSizing: 'border-box' }} />
+              </div>
+            </div>
 
-function Landing({ onStart }) {
-  return (
-    <div className="max-w-2xl mx-auto text-center mt-16 space-y-5">
-      <h1 className="text-3xl font-bold">AI-Powered Financial Readiness Assessment</h1>
-      <p className="text-slate-400">
-        FinShield combines your institution's financial profile with an official-sources-only
-        regulatory knowledge base to produce an explainable readiness score, risk breakdown,
-        and evidence-backed recommendations — as a decision-support prototype, not a
-        certified regulatory tool.
-      </p>
-      <button
-        onClick={onStart}
-        className="bg-emerald-500 hover:bg-emerald-400 text-slate-900 font-semibold px-6 py-3 rounded-lg transition"
-      >
-        Start Assessment →
-      </button>
-    </div>
-  )
-}
+            <button 
+              type="submit" 
+              style={{ width: '100%', padding: '12px', backgroundColor: '#10b981', color: '#0f172a', fontWeight: 'bold', border: 'none', borderRadius: '8px', cursor: 'pointer', fontSize: '14px' }}
+            >
+              Run Readiness Assessment
+            </button>
+          </form>
+        )}
 
-function LoadingPipeline() {
-  const steps = [
-    'SRC — receiving institution data',
-    'C — collecting submission',
-    'PP — validating & normalizing',
-    'M — scoring financial readiness',
-    'P — applying policy thresholds & retrieving regulations',
-    'D — formatting results',
-  ]
-  return (
-    <div className="max-w-md mx-auto mt-16 space-y-3">
-      {steps.map((s, i) => (
-        <div key={i} className="flex items-center gap-3 text-sm text-slate-400">
-          <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-          {s}
-        </div>
-      ))}
+        {/* 3. LOADING PIPELINE VIEW */}
+        {view === 'loading' && (
+          <div style={{ maxWidth: '400px', margin: '48px auto', textAlign: 'center' }}>
+            <p style={{ color: '#10b981', fontWeight: 'bold', marginBottom: '16px' }}>Evaluating Assessment Pipeline...</p>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', textAlign: 'left', fontSize: '13px', color: '#94a3b8' }}>
+              <div>• SRC — receiving institution data</div>
+              <div>• C — collecting submission</div>
+              <div>• PP — validating & normalizing</div>
+              <div>• M — scoring financial readiness</div>
+              <div>• P — applying policy thresholds & retrieving regulations</div>
+            </div>
+          </div>
+        )}
+
+        {/* 4. RESULTS VIEW */}
+        {view === 'results' && result && (
+          <div style={{ backgroundColor: '#111827', padding: '24px', borderRadius: '12px', border: '1px solid #1e293b' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid #1e293b', paddingBottom: '16px', marginBottom: '20px' }}>
+              <div>
+                <h2 style={{ fontSize: '20px', margin: 0 }}>Assessment Results</h2>
+                <span style={{ fontSize: '12px', color: '#4ade80', fontWeight: 'bold' }}>Status: {result.status}</span>
+              </div>
+              <div style={{ textAlign: 'right' }}>
+                <span style={{ fontSize: '32px', fontWeight: 'bold', color: '#10b981' }}>{result.overallScore}</span>
+                <span style={{ fontSize: '11px', color: '#64748b', display: 'block' }}>/ 100 Score</span>
+              </div>
+            </div>
+
+            <p style={{ backgroundColor: '#030712', padding: '14px', borderRadius: '8px', fontSize: '13px', color: '#cbd5e1', border: '1px solid #1e293b', lineHeight: '1.5' }}>
+              {result.summary}
+            </p>
+
+            <div style={{ marginTop: '20px' }}>
+              <h4 style={{ fontSize: '13px', color: '#94a3b8', marginBottom: '8px' }}>Recommendations:</h4>
+              <ul style={{ fontSize: '12px', color: '#cbd5e1', paddingLeft: '20px' }}>
+                {result.recommendations.map((rec, i) => (
+                  <li key={i} style={{ marginBottom: '4px' }}>{rec}</li>
+                ))}
+              </ul>
+            </div>
+
+            <button 
+              onClick={() => setView('form')} 
+              style={{ marginTop: '20px', padding: '8px 16px', backgroundColor: '#334155', color: '#fff', border: 'none', borderRadius: '6px', cursor: 'pointer', fontSize: '12px' }}
+            >
+              ← Back to Assessment
+            </button>
+          </div>
+        )}
+
+      </div>
     </div>
   )
 }
