@@ -1,7 +1,6 @@
 import { useState } from 'react'
-import DisclaimerBanner from './components/DisclaimerBanner.jsx'
-import AssessmentForm from './components/AssessmentForm.jsx'
-import Dashboard from './components/Dashboard.jsx'
+import AssessmentForm from './AssessmentForm.jsx'
+import Dashboard from './Dashboard.jsx'
 import { assess } from './api.js'
 
 const VIEWS = { LANDING: 'landing', FORM: 'form', LOADING: 'loading', RESULTS: 'results' }
@@ -33,7 +32,7 @@ export default function App() {
     <div className="min-h-screen px-6 py-8">
       <header className="max-w-5xl mx-auto flex items-center justify-between mb-6">
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-lg bg-accent/20 flex items-center justify-center text-accent font-bold">
+          <div className="w-8 h-8 rounded-lg bg-emerald-500/20 flex items-center justify-center text-emerald-400 font-bold">
             FS
           </div>
           <span className="font-semibold text-lg">FinShield</span>
@@ -42,7 +41,9 @@ export default function App() {
       </header>
 
       <div className="max-w-5xl mx-auto mb-8">
-        <DisclaimerBanner />
+        <div className="bg-amber-500/10 border border-amber-500/20 text-amber-200 text-xs p-3 rounded-lg">
+          Decision-support prototype only — not a certified financial or regulatory assessment tool. Built for the ITU AI Readiness 2.0 Hackathon.
+        </div>
       </div>
 
       {view === VIEWS.LANDING && <Landing onStart={() => setView(VIEWS.FORM)} />}
@@ -51,7 +52,7 @@ export default function App() {
         <div className="space-y-4">
           {error && (
             <p className="max-w-2xl mx-auto text-sm text-rose-400 bg-rose-500/10 border border-rose-500/30 rounded-md px-4 py-2">
-              {error} — is the backend running on http://localhost:8000?
+              {error}
             </p>
           )}
           <AssessmentForm onSubmit={handleSubmit} />
@@ -77,7 +78,7 @@ function Landing({ onStart }) {
       </p>
       <button
         onClick={onStart}
-        className="bg-accent hover:bg-emerald-400 text-slate-900 font-semibold px-6 py-3 rounded-lg transition"
+        className="bg-emerald-500 hover:bg-emerald-400 text-slate-900 font-semibold px-6 py-3 rounded-lg transition"
       >
         Start Assessment →
       </button>
@@ -98,7 +99,7 @@ function LoadingPipeline() {
     <div className="max-w-md mx-auto mt-16 space-y-3">
       {steps.map((s, i) => (
         <div key={i} className="flex items-center gap-3 text-sm text-slate-400">
-          <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
+          <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
           {s}
         </div>
       ))}
