@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import DisclaimerBanner from './DisclaimerBanner.jsx'
-import AssessmentForm from './components/AssessmentForm.jsx'
-import Dashboard from './components/Dashboard.jsx'
+import AssessmentForm from './AssessmentForm.jsx'
+import Dashboard from './Dashboard.jsx'
 import { assess } from './api.js'
 
 const VIEWS = { LANDING: 'landing', FORM: 'form', LOADING: 'loading', RESULTS: 'results' }
