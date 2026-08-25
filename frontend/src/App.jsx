@@ -51,7 +51,7 @@ export default function App() {
         <div className="space-y-4">
           {error && (
             <p className="max-w-2xl mx-auto text-sm text-rose-400 bg-rose-500/10 border border-rose-500/30 rounded-md px-4 py-2">
-              {error} — is the backend running on http://localhost:8000?
+             {error} - is the backend running on https://finshield-x77k.onrender.com?
             </p>
           )}
           <AssessmentForm onSubmit={handleSubmit} />
