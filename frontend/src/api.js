@@ -1,4 +1,4 @@
-const API_BASE = 'http://localhost:8000'
+const API_BASE = 'https://finshield-x77k.onrender.com'
 
 export async function assess(payload) {
   const res = await fetch(`${API_BASE}/api/assess`, {
